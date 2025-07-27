@@ -13,6 +13,29 @@ class Solution:
 
         return dp[target]
 
+# Method 2: recursion with memo
+
+class Solution:
+    def combinationSum4(self, nums: List[int], target: int) -> int:
+        # Top down approach: dfs + cache
+        memo = {}
+
+        def dfs(remaining):
+            if remaining == 0:
+                return 1 # 1 valid solution
+            elif remaining < 0:
+                return 0 # no valid solution
+            if remaining in memo:
+                return memo[remaining]
+
+            total = 0
+            for num in nums:
+                total += dfs(remaining-num)
+            memo[remaining] = total
+            return total
+
+        return dfs(target)
+
 
 
 Example Walkthrough

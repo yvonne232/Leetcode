@@ -1,4 +1,4 @@
-# Method 1: time complexity O(n); space complexity O(n)
+# Method 1: time complexity O(n); space complexity O(n). I think this is better
 class Solution:
     def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
         MOD = 10 ** 9 + 7
@@ -12,3 +12,19 @@ class Solution:
                 dp[i] = (dp[i] + dp[i-one]) % MOD
         
         return sum(dp[i] for i in range(low, high+1)) % MOD
+
+# Method 2: time complexity O(n); space complexity O(n).
+class Solution:
+    def countGoodStrings(self, low: int, high: int, zero: int, one: int) -> int:
+        MOD = 10 ** 9 + 7
+        
+        @cache
+        def dfs(length):
+            if length > high:
+                return 0
+            count = 1 if length >= low else 0
+            count = (count + dfs(length + zero)) % MOD
+            count = (count + dfs(length + one)) % MOD
+            return count
+
+        return dfs(0)

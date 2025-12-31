@@ -36,6 +36,15 @@ class Solution:
 
         return dfs(target)
 
+Concrete trace (nums = [1,2,3], target = 1)
+
+Call:
+dfs(1)
+Expansion:
+dfs(1) =
+  dfs(0)  # choose 1
++ dfs(-1) # choose 2
++ dfs(-2) # choose 3
 
 
 Example Walkthrough

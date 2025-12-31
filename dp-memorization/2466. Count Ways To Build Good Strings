@@ -28,3 +28,16 @@ class Solution:
             return count
 
         return dfs(0)
+
+Example:
+
+low=3, high=3, zero=1, one=1 → dp[3]=8
+dp[1] += dp[1 - zero] = dp[0] = 1
+dp[1] += dp[1 - one]  = dp[0] = 1
+Then dp[1] = 2
+dp[2] += dp[2 - zero] = dp[1] = 2
+dp[2] += dp[2 - one]  = dp[1] = 2
+Then dp[2] = 4
+dp[3] += dp[3 - zero] = dp[2] = 4
+dp[3] += dp[3 - one]  = dp[2] = 4
+Then dp[3] =8

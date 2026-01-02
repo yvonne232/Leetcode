@@ -10,3 +10,13 @@ class Solution:
             rob2 = temp
         
         return rob2
+
+For houses:
+...  [i-2]  [i-1]  [i]
+If you rob [i], [i-1] must be skipped
+⇒ last safe state is [i-2]
+So
+1. Skip it
+money = prev1
+2. Rob it
+money = prev2 + nums[i]

@@ -1,0 +1,22 @@
+Time: O(max(nums)) (or O(n + maxVal)) ; counter takes O(n) time and iteration takes O(maxVal) time
+Space: O(n) for the counter
+
+class Solution:
+    def deleteAndEarn(self, nums: List[int]) -> int:
+        cnt = Counter(nums)
+        max_val = max(cnt)
+        prev2, prev1 = 0, 0
+
+        for v in range(1, max_val+1):
+            gain = cnt.get(v,0) * v
+            cur = max(prev1, prev2+gain)
+            prev2, prev1 = prev1, cur
+
+        return prev1
+
+Robbing house v gives points[v] = v * count(v)
+You cannot rob adjacent houses (v-1, v+1)
+So:
+We must skip v-1
+Add points[v] to dp[v-2]
+prev2 + points[v]

@@ -1,0 +1,23 @@
+# prev[i] is the largest index j < i with v[j] <= v[i] - 3 (so it’s far enough).
+# dp[i] = max(dp[i-1], w[i]+(dp[prev[i] else 0)
+
+Time complexity: O(Counter(power) - O(n)+ O(mlogn) - Sorting m values → O(m log m)
+Space complexity: O(m) - dp
+
+class Solution:
+    def maximumTotalDamage(self, power: List[int]) -> int:
+        # it could not use prev2, prev1
+        count = Counter(power) # m: count
+        vals = sorted(count.keys())
+        m = len(vals)
+        dp = [0] * m
+        mx = 0
+        j = 0
+        
+        for i in range(m):
+            while j < i and vals[j] <= vals[i] - 3:
+                mx = max(mx, dp[j])
+                j += 1
+            dp[i] = mx + vals[i]*count[vals[i]]
+
+        return max(dp)

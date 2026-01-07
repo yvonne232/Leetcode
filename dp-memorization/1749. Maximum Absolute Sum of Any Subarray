@@ -1,0 +1,21 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution:
+    def maxAbsoluteSum(self, nums: List[int]) -> int:
+        # This is “Kadane twice”: you want the largest positive subarray sum and the most negative subarray sum
+        max_cur = 0
+        max_sum = 0
+        min_cur = 0
+        min_sum = 0
+
+        for n in nums:
+            max_cur = max(n, max_cur+n)
+            max_sum = max(max_sum, max_cur)
+
+            min_cur = min(n, min_cur+n)
+            min_sum = min(min_sum, min_cur)
+        
+        max_sum = max(max_sum, abs(min_sum))
+
+        return max_sum

@@ -1,0 +1,21 @@
+Time: O(n + k) where n=len(s), k=len(chars)
+Space: O(k) for the map
+
+class Solution:
+    def maximumCostSubstring(self, s: str, chars: str, vals: List[int]) -> int:
+        cur_cost = 0
+        max_cost = 0
+
+        char_dict = {c: v for c, v in zip(chars, vals)}
+
+        for c in s:
+            val = char_dict.get(c, (ord(c)-ord("a")+1))
+            cur_cost = max(0, cur_cost+val) # could do empty string
+            max_cost = max(max_cost, cur_cost)
+
+        return max_cost
+
+
+# max(0, cur_cost + val)
+This compares:
+drop everything → empty substring (0)

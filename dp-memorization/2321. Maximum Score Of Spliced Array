@@ -1,0 +1,22 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution:
+    def maximumsSplicedArray(self, nums1: List[int], nums2: List[int]) -> int:
+        s1, s2 = sum(nums1), sum(nums2)
+
+        # idea: find two subarray(elements are contiguous) in the diff
+
+        # nums2 into nums1
+        cur = bestGain1 = 0
+        for a, b in zip(nums1, nums2):
+            cur = max(0, cur+(b-a))
+            bestGain1 = max(bestGain1, cur)
+
+        # nums1 into nums2
+        cur = bestGain2 = 0
+        for a, b in zip(nums1, nums2):
+            cur = max(0, cur+(a-b))
+            bestGain2 = max(bestGain2, cur)
+
+        return max(s1+bestGain1, s2+bestGain2)

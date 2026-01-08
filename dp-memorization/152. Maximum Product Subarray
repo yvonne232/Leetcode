@@ -1,0 +1,18 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        max_prod = min_prod = ans = nums[0]
+
+        for n in nums[1:]:
+            # if x is negative, max/min swap roles
+            if n < 0:
+                max_prod, min_prod = min_prod, max_prod
+
+            max_prod = max(n, n*max_prod)
+            min_prod = min(n, n*min_prod)
+
+            ans = max(ans, max_prod)
+
+        return ans

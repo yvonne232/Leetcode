@@ -1,0 +1,34 @@
+Time: O(m × n)
+Space: O(n) (one row only)
+
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0]) # m*n
+        dp = [0] * n
+        dp[0] = grid[0][0]
+
+        for j in range(1, n):
+            dp[j] = dp[j-1] + grid[0][j] # column
+        
+        for i in range(1, m):
+            dp[0] += grid[i][0]
+            for j in range(1, n):
+                dp[j] =  grid[i][j] + min(dp[j], dp[j-1])
+                # top (i-1, j) → cost dp[j]
+                # left (i, j-1) → cost dp[j-1]
+
+        return dp[-1]
+
+分类讨论怎么到达 (i,j)：
+
+如果是从左边过来，那么必须先到达 (i,j−1)，我们需要知道从左上角到 (i,j−1) 的最小价值和，再加上 grid[i][j]，得到 dfs(i,j−1)+grid[i][j]。
+如果是从上边过来，那么必须先到达 (i−1,j)，我们需要知道从左上角到 (i−1,j) 的最小价值和，再加上 grid[i][j]，得到 dfs(i−1,j)+grid[i][j]。
+二者取最小值，得到状态转移方程：
+
+dfs(i,j)=min(dfs(i,j−1),dfs(i−1,j))+grid[i][j]
+递归边界：
+dfs(−1,j)=dfs(i,−1)=∞。用 ∞ 表示不合法（出界）的状态，从而保证 min 不会取到不合法的状态。
+dfs(0,0)=grid[0][0]。
+
+So for cell (i, j):
+dp[j] = grid[i][j] + min(from top, from left)

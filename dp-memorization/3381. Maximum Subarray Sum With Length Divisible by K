@@ -1,0 +1,35 @@
+class Solution:
+    def maxSubarraySum(self, nums: List[int], k: int) -> int:
+        # Prefix Sum
+        prefixSum = 0
+        maxSum = -math.inf
+        # there are k different remainders modulo k, and that’s all we need to enforce the “length divisible by k
+        kSum = [math.inf] * k
+        kSum[0] = 0
+
+        for t, x in enumerate(nums, start=1): # 1-based index 
+            prefixSum += x
+            maxSum = max(maxSum, prefixSum - kSum[t%k])
+            kSum[t%k] = min(kSum[t%k], prefixSum)
+
+        return maxSum
+
+One pass through nums: O(n) time
+kSum array of length k: O(k) space
+
+For a fixed remainder, the best l is the one with smallest prefix sum
+P[t] is fixed, so this is largest when P[l] is as small as possible among all l with l % k == rem.
+
+(r−l+1)%k=0⟺(r+1−l)%k=0⟺(r+1)%k=l%k
+
+nums = [a, b, c, d, e]
+The prefix sum array P is defined as:
+
+P[0] = 0
+P[1] = a
+P[2] = a + b
+P[3] = a + b + c
+P[4] = a + b + c + d
+P[5] = a + b + c + d + e
+
+we want to max p[r+1]-p[l]

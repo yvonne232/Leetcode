@@ -1,0 +1,49 @@
+Time: O(n**2)
+Space: O(n)
+
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        dp = triangle[0][:] # copy first row
+
+        for i in range(1, len(triangle)):
+            row = triangle[i]
+            dp.append(0)
+            for j in range(i, -1, -1):
+                if j == 0:
+                    dp[j] = dp[j] + row[j]
+                elif j == i:
+                    dp[j] = dp[j-1] + row[j]
+                else:
+                    dp[j] = min(dp[j],dp[j-1]) + row[j]
+
+        return min(dp)
+
+From row i-1 to row i, you can come from:
+- directly above: (i-1, j)
+- above-left: (i-1, j-1)
+
+dp[i][j] = triangle[i][j] + min(dp[i-1][j-1], dp[i-1][j])
+
+why dp.append(0)?
+Each row of the triangle has one more element than the previous row.
+Example:
+
+Row 0: 1 element
+Row 1: 2 elements
+Row 2: 3 elements
+...
+
+Case 1: j == 0 (left edge)
+dp[0] = dp[0] + row[0]
+You can only come from directly above
+
+Case 2: j == i (right edge)
+dp[j] = dp[j-1] + row[j]
+You can only come from above-left
+
+Case 3: middle elements (0 < j < i)
+dp[j] = min(dp[j-1], dp[j]) + row[j]
+
+Iterating backwards (right → left) guarantees those old values are still intact when we need them.
+
+the path can end at any position in the last row, so we return min(dp)

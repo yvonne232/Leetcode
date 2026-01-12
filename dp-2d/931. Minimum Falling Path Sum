@@ -1,0 +1,47 @@
+Time: O(n^2)
+Space: O(n) (two rows)
+
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        n = len(matrix)
+        prev = matrix[0][:] #dp for row 0
+
+        for i in range(1, n):
+            cur = [0] * n
+            for j in range(n):
+                best_above = prev[j]
+                if j > 0:
+                    best_above = min(best_above, prev[j-1])
+                if j+1 < n:
+                    best_above = min(best_above, prev[j+1])
+                cur[j] = matrix[i][j] + best_above
+
+            prev = cur
+        
+        return min(prev)
+
+
+
+If we stored a full 2D DP table:
+
+dp[0]
+dp[1]
+dp[2]
+...
+dp[n-1]
+
+We keep:
+- prev → DP values for row i-1
+- cur → DP values for row i
+
+Workflow:
+Read from prev
+Write into cur
+Assign prev = cur
+Move to next row
+
+dp[i][j] = matrix[i][j] + min(
+    dp[i-1][j],
+    dp[i-1][j-1] if j>0 else inf,
+    dp[i-1][j+1] if j<n-1 else inf
+)

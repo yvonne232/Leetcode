@@ -1,0 +1,12 @@
+
+
+Moves always go to the next column,
+This order is necessary because determining the value for cell (i, j) depends on the values of the cells in the previous column, namely (i - 1, j - 1), (i, j - 1), and (i + 1, j - 1).
+
+we update dp[i][j] to be the maximum of its current value and one plus the value of the reachable cell:
+dp[i][j] = max(dp[i][j], dp[i - 1][j - 1] + 1, dp[i][j - 1] + 1, dp[i + 1][j - 1] + 1)
+
+dp[i][0]  # previous column (j - 1)
+dp[i][1]  # current column (j)
+
+

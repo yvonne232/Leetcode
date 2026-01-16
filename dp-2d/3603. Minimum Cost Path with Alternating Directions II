@@ -1,0 +1,41 @@
+Time Complexity: O(m*n)
+Space Complexity: O(n）
+
+class Solution:
+    def minCost(self, m: int, n: int, waitCost: List[List[int]]) -> int:
+        def entry(i,j):
+            return (i+1)*(j+1)
+        def cell_cost(i,j):
+            # start or destination: no forced wait cost
+            if (i==0 and j==0) or (i==m-1 and j==n-1):
+                return entry(i,j)
+            else:
+                return entry(i,j) + waitCost[i][j]
+
+        dp = [0] * n
+        dp[0] = cell_cost(0,0)
+        # first row
+        for col in range(1, n):
+            dp[col] = dp[col-1] + cell_cost(0, col)
+
+        # remaining rows
+        for row in range(1,m):
+            dp[0] += cell_cost(row, 0) # first column
+            for col in range(1,n):
+                dp[col] = min(dp[col], dp[col-1]) + cell_cost(row, col)
+        
+        return dp[-1]
+
+
+What the rule implies
+
+If you are at some cell (i,j) and you haven’t finished yet, then:
+Odd second: you move into (i,j) and pay entry(i,j)
+Even second: you must wait on (i,j) and pay waitCost[i][j]
+
+So for any cell you enter and then later leave, you pay: entry(i,j)+waitCost(i,j)
+
+But there are two exceptions:
+
+Start (0,0): you enter it at second 1 and then immediately move on the same odd-second “move step” sequence starts from there — there’s no required “wait at start” in the minimal modeling we use.
+Destination (m−1,n−1): once you enter it, you stop, so you do not pay a wait there.

@@ -1,0 +1,23 @@
+Time: O(m * n^2)
+Space: O(n) (rolling arrays)
+
+class Solution:
+    def minPathCost(self, grid: List[List[int]], moveCost: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dp = grid[0][:] # first row in grid
+
+        for row in range(m-1):
+            nxt = [float('inf')] * n     
+            for col in range(n):
+                value = grid[row][col]
+                for n_col in range(n):
+                    nxt[n_col] = min(nxt[n_col], dp[col] + moveCost[value][n_col]+grid[row+1][n_col])
+            dp = nxt
+
+        return min(dp)
+
+
+
+Definition from the problem
+moveCost[i][j] is the cost of moving from a cell with value i
+to column j in the next row

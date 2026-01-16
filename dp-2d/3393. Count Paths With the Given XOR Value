@@ -1,0 +1,60 @@
+Time Complexity: O(m*n)
+Space Complexity: O(n)
+
+class Solution:
+    def countPathsWithXorValue(self, grid: List[List[int]], k: int) -> int:
+        m, n = len(grid), len(grid[0])
+        MOD = 10**9+7
+
+        def xor_update(num, ctr:counter):
+            res = Counter()
+            for key in ctr:
+                res[key^num] += ctr[key]
+            return res
+
+        # first row
+        prev = [Counter()] * n
+        # base (0,0)
+        prev[0] = xor_update(grid[0][0], Counter({0:1}))
+        for col in range(1,n):
+            prev[col] = xor_update(grid[0][col], prev[col-1])
+        
+        for row in range(1,m):
+            curr = [Counter()] * n
+            # first col: only from top
+            curr[0] = xor_update(grid[row][0], prev[0])
+
+            for col in range (1,n):
+                ctr = prev[col] + curr[col-1] # from top +from left
+                curr[col] = xor_update(grid[row][col], ctr)
+
+            prev = curr
+
+        return prev[-1][k] % MOD
+
+Definition of XOR
+
+For two numbers a and b:
+a ^ b
+
+
+means:
+bit is 1 if the bits are different
+bit is 0 if the bits are the same
+
+Examples:
+5 ^ 3 = 6
+0101
+0011
+----
+0110
+
+These two are equivalent:
+Counter({0: 1})
+Counter([0])
+
+Both produce:
+{0: 1}
+Counter({0: 1}) means “there is exactly one way to have XOR value 0”, which is the correct base state before any grid cells are included.
+
+prev[-1][k] means prev[-1] = DP state at bottom-right cell and then the number of paths with XOR exactly equal to k

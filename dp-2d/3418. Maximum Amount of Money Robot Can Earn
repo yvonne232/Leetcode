@@ -1,0 +1,55 @@
+Time: O(m * n * 3) → effectively O(mn)
+Space: O(n * 3) → effectively O(n)
+
+
+class Solution:
+    def maximumAmount(self, coins: List[List[int]]) -> int:
+        m, n = len(coins), len(coins[0])
+        # with t neutralizations used, # dp[col][t]
+        dp = [[float("-inf")] *3 for _ in range(n)]
+
+        dp[0][0] = coins[0][0] # don't neutralize
+        if coins[0][0] < 0:
+            dp[0][1] = 0 # neutralize
+            dp[0][2] = 0
+
+        # first row
+        for col in range(1, n):
+            v = coins[0][col]
+            for t in range(3):
+                dp[col][t] = max(dp[col][t], dp[col-1][t]+v)
+                # neutralize current cell if it's negative
+                if v < 0 and t > 0:
+                    dp[col][t] = max(dp[col][t], dp[col-1][t-1])
+
+        # remaining rows
+        for row in range(1, m):
+            nxt = [[float("-inf")] *3 for _ in range(n)]
+            for col in range(n):
+                v = coins[row][col]
+                for t in range(3):
+                    best_prev = float("-inf")
+                    # from top 
+                    best_prev = max(best_prev, dp[col][t])
+                    # from left
+                    if col > 0:
+                        best_prev = max(best_prev, nxt[col-1][t])
+                    nxt[col][t] = max(nxt[col][t], best_prev+v)
+
+                    # option 2: neutralize this cell
+                    if v<0 and t>0:
+                        best_prev2 = float("-inf")
+                        # from top
+                        best_prev2 = max(best_prev2, dp[col][t-1])
+                        # from left
+                        if col > 0:
+                            best_prev2 = max(best_prev2, nxt[col-1][t-1])
+                        nxt[col][t] = max(nxt[col][t], best_prev2)
+
+            dp = nxt
+
+        return max(dp[-1])
+
+
+There are 3 states for t for every dp row
+max(dp[m−1][n−1][0],dp[m−1][n−1][1],dp[m−1][n−1][2]) Where t ∈ {0,1,2}.

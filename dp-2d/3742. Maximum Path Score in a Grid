@@ -1,3 +1,46 @@
+Time Complexity: O(m*n*k)
+Space Complexity: O(n*k)
 
+class Solution:
+    def maxPathScore(self, grid: List[List[int]], k: int) -> int:
+        m, n = len(grid), len(grid[0])
+        # best score with cost c
+        NEG = float("-inf")
+        dp = [[NEG] * (k+1) for _ in range(n)]
+
+        def cal_cost(v):
+            return 0 if v==0 else 1
+
+        start_cost = cal_cost(grid[0][0])
+        if start_cost <= k:
+            dp[0][start_cost] = grid[0][0]
+
+        # first row
+        for col in range(1, n):
+            v = grid[0][col]
+            c = cal_cost(v)
+            for cost in range(c, k+1):
+                dp[col][cost] = max(dp[col][cost], dp[col-1][cost-c]+v)
+
+        # remaining rows
+        for row in range(1,m):
+            nxt = [[NEG] * (k+1) for _ in range(n)]
+            for col in range(n):
+                v = grid[row][col]
+                c = cal_cost(v)
+                for cost_i in range(c, k+1):
+                    # from top
+                    nxt[col][cost_i] = max(nxt[col][cost_i], dp[col][cost_i-c]+v)
+                    # from left
+                    if col > 0:
+                        nxt[col][cost_i] = max(nxt[col][cost_i], nxt[col-1][cost_i-c]+v)
+
+            dp = nxt
+
+        return max(dp[-1]) if max(dp[-1]) != NEG else -1
 
 It needs a dimension for cost: Because the constraint is “maximize score subject to cost ≤ k” — that’s exactly a knapsack-style constraint, so you need cost as a DP dimension.
+
+Each dp[n-1][cost] represents a valid path with that cost
+So the answer is:​
+dp[n−1][cost]

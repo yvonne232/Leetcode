@@ -1,0 +1,3 @@
+
+
+It needs a dimension for cost: Because the constraint is “maximize score subject to cost ≤ k” — that’s exactly a knapsack-style constraint, so you need cost as a DP dimension.

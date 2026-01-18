@@ -1,0 +1,34 @@
+Time complexity: O(n)
+Space complexity: O(3)
+
+class Solution:
+    def minSideJumps(self, obstacles: List[int]) -> int:
+        dp = [1, 0, 1] # Frog starts on lane 2 with 0 side jumps
+
+        for i in range(1, len(obstacles)):
+            obs = obstacles[i]
+            if obs != 0:
+                dp[obs-1] = float("inf")
+            
+            best = min(dp)
+            for j in range(3):
+                if obstacles[i] != j+1: # lane is open
+                    dp[j] = min(dp[j], best+1)
+
+        return min(dp)
+
+
+Start (point 0)
+Frog starts on lane 2 with 0 side jumps:
+- lane 2: 0
+- lane 1 and 3: 1 (one side jump from lane 2 at point 0)
+So:
+dp = [1, 0, 1]   # lanes 1,2,3
+
+If obstacles[i] == l, then lane l is impossible:
+dp[l-1] = INF
+
+relax side jumps within the same point
+If you’re at point i, you can side-jump to another lane (same point) with cost +1.
+So for each lane l that is not blocked:
+dp[l] = min(dp[l], 1 + min(dp[other two lanes]))

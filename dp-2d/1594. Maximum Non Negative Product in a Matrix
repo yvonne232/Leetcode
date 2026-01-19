@@ -1,0 +1,48 @@
+Time Complexity: O(m*n)
+Space Complexity: O(n)
+
+class Solution:
+    def maxProductPath(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        dp_max = [[0] for _ in range(n)]
+        dp_min = [[0] for _ in range(n)]
+        MOD = 10 ** 9 + 7
+
+        # first row
+        dp_max[0] = dp_min[0] = grid[0][0]
+        for col in range(1, n):
+            v = grid[0][col]
+            dp_max[col] = dp_min[col] = dp_max[col-1] * v
+
+        # remaining rows
+        for row in range(1,m):
+            nxt_max = [[0] for _ in range(n)]
+            nxt_min = [[0] for _ in range(n)]
+            # first column
+            v = grid[row][0]
+            nxt_max[0] = nxt_min[0] = dp_max[0] * v
+            for col in range(1,n):
+                v = grid[row][col]
+                # from top
+                top_nxt_max = dp_max[col]
+                top_nxt_min = dp_min[col]
+                # from left
+                left_nxt_max = nxt_max[col-1]
+                left_nxt_min = nxt_min[col-1]
+
+                a = top_nxt_max * v
+                b = top_nxt_min * v
+                c = left_nxt_max * v
+                d = left_nxt_min * v
+
+                nxt_max[col] = max(a, b, c, d)
+                nxt_min[col] = min(a, b, c, d)
+
+            dp_max, dp_min = nxt_max, nxt_min
+
+        return dp_max[-1] % MOD if dp_max[-1] >= 0 else -1
+                   
+
+
+This one is like “max path sum”, but multiplication with negatives means you must track both extremes.
+At column 0, dp_max[0] and dp_min[0] are equal because only one path exists. So nxt_max[0] = nxt_min[0] = dp_max[0] * v

@@ -1,0 +1,1 @@
+Backward loop?  Forward would reuse the same x multiple times (turns it into unbounded knapsack). Backward keeps it 0/1.

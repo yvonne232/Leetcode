@@ -1,0 +1,45 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        total = sum(nums)
+        if (total+target) % 2 != 0:
+            return 0
+        if abs(target) > total:
+            return 0
+     
+        P = (total+target) // 2
+        dp = [0] * (P+1)
+        dp[0] = 1
+
+        for n in nums:
+            for s in range(P, n-1, -1):
+                dp[s] += dp[s-n]
+        
+        return dp[P]
+
+
+
+Split numbers into two groups:
+
+P: numbers you put a + in front of
+
+N: numbers you put a - in front of
+
+Then the expression value is:
+
+sum(P)−sum(N)=target
+
+Also:
+sum(P)+sum(N)=S(where S=sum(nums))
+
+Add the two equations:
+2⋅sum(P)=S+target⇒sum(P)= (S+target)/2
+
+DP idea (count ways)
+Let dp[s] = number of ways to pick a subset with sum s.
+Initialize:
+- dp[0] = 1 (one way: pick nothing)
+For each number x:
+update backwards: dp[s] += dp[s - x]
+Backward loop ensures each number is used at most once.
+
+	​

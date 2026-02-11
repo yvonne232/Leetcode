@@ -1,1 +1,23 @@
+Time complexity: O(n*target)
+Space Complexity: O(target)
+
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+        total = sum(nums)
+
+        # if total_sum is odd, it cannot be partitioned into equal sum subsets
+        if total % 2 != 0:
+            return False
+        target = total // 2
+        
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+        for x in nums:
+            # go backwards so each number is used at most once
+            for s in range(target, x-1, -1):
+                dp[s] = dp[s] or dp[s-x]
+
+        return dp[target]
+
 Backward loop?  Forward would reuse the same x multiple times (turns it into unbounded knapsack). Backward keeps it 0/1.

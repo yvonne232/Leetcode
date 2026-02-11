@@ -1,0 +1,23 @@
+Time complexity: O(n*target)
+Space Complexity: O(target)
+class Solution:
+    def lengthOfLongestSubsequence(self, nums: List[int], target: int) -> int:
+        NEG = float('-inf')
+        dp = [NEG] * (target+1)
+        dp[0] = 0
+
+        for x in nums:
+            for s in range(target, x-1, -1):
+                if dp[s-x] != NEG:
+                    dp[s] = max(dp[s], dp[s-x]+1)
+
+        return dp[target] if dp[target] != NEG else -1
+
+dp[0] = 0 because 
+
+What is the maximum length of a subsequence that sums to 0?
+There is exactly one way:
+👉 Take nothing
+That subsequence:
+has sum = 0
+has length = 0

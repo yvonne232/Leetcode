@@ -1,4 +1,19 @@
+class Solution:
+    def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
+        # dp[i][j] = max number of strings using at most i zeros and j ones
+        # rows    = m + 1
+        # columns = n + 1
+        dp = [[0] * (n+1) for _ in range(m+1)]
 
+        for s in strs:
+            zeros = s.count('0')
+            ones = len(s) - zeros
+
+            for i in range(m, zeros-1, -1):
+                for j in range(n, ones-1, -1):
+                    dp[i][j] = max(dp[i][j], dp[i-zeros][j-ones]+1)
+
+        return dp[m][n]
 
 # dp[i][j] = max number of strings using at most i zeros and j ones
 
@@ -8,3 +23,15 @@ This is a classic 0/1 knapsack in 2 dimensions:
 - Value = 1 (we want max number of strings)
 - Capacity = (m, n)
 So we do DP over m zeros and n ones.
+
+Key idea (why reverse loops?)
+- Because each string can be used at most once (subset), we must update dp backwards:
+for i in range(m, z-1, -1)
+for j in range(n, o-1, -1)
+
+dp[i][j] = max(dp[i][j], dp[i-zeros][j-ones] + 1)
+- Choice 1 — Do NOT take this string dp[i][j]  (old value)
+- Choice 2 — Take this string
+If we take it:
+remaining zeros capacity = i - zeros
+remaining ones capacity = j - ones

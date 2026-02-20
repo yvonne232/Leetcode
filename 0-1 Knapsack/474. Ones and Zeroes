@@ -1,3 +1,5 @@
+Time: O(L * m * n)
+Space: O(m * n)
 class Solution:
     def findMaxForm(self, strs: List[str], m: int, n: int) -> int:
         # dp[i][j] = max number of strings using at most i zeros and j ones

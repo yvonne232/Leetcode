@@ -1,0 +1,37 @@
+Time: O(len(stones) * (sum(stones)/2))
+Space: O(sum(stones)/2)
+
+class Solution:
+    def lastStoneWeightII(self, stones: List[int]) -> int:
+        total = sum(stones)
+        target = total // 2
+        dp = [False] * (target + 1)
+        dp[0] = True
+
+        for weight in stones:
+            for w in range(target, weight-1, -1):
+                dp[w] = dp[w] or dp[w-weight]
+
+        for w in range(target, -1, -1):
+            if dp[w]:
+                return total - 2 * w
+
+        return 0
+        
+
+Why is dp boolean (True/False)?
+Because in this problem we don’t care how many stones we use.
+We only care about: Can we form a subset with sum = w?
+That’s a reachability problem, not a maximization problem.
+So:
+dp[w] = True  →  we can make sum w
+dp[w] = False →  we cannot
+
+We are solving:
+Find t <= S/2 such that t is achievable and t is maximal such that t is achievable and t is maximal
+
+Let S = sum(stones). If we can make one group have sum t, then difference is: ∣(S−t)−t∣=∣S−2t∣
+To minimize this, we want t as close as possible to S/2 but not exceeding it.
+
+Why is dp[0] = True?
+Because: We can always form sum = 0 by choosing nothing.

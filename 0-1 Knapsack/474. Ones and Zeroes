@@ -1,0 +1,10 @@
+
+
+# dp[i][j] = max number of strings using at most i zeros and j ones
+
+This is a classic 0/1 knapsack in 2 dimensions:
+- Each string s is an item.
+- Cost = (zeros(s), ones(s))
+- Value = 1 (we want max number of strings)
+- Capacity = (m, n)
+So we do DP over m zeros and n ones.

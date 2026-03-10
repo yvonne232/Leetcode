@@ -1,0 +1,14 @@
+# Time complexity: O(n)
+# Space complexity: O(1)
+
+class Solution:
+    def getDecimalValue(self, head: Optional[ListNode]) -> int:
+        result = 0
+        while head:
+            result = result * 2 + head.val
+            # Or result << 1   # shift bits left (multiply by 2)
+            # Or result = (result << 1) | head.val
+            # | head.val (Bitwise OR); | means bitwise OR.; Since head.val is either 0 or 1, this simply adds the next binary bit.
+            head = head.next
+
+        return result

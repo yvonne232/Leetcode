@@ -1,0 +1,35 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def insert(self, head: 'Optional[Node]', insertVal: int) -> 'Node':
+        new_node = Node(insertVal)
+
+        # empty list
+        if not head:
+            new_node.next = new_node
+            return new_node
+
+        curr = head
+
+        while True:
+            nxt = curr.next
+
+            if curr.val <= insertVal <= nxt.val:
+                break
+            
+            # turning point
+            if curr.val > nxt.val:
+                if insertVal >= curr.val or insertVal <= nxt.val:
+                    break
+
+            curr = nxt
+
+            # full circle: all same values 
+            if curr == head:
+                break
+        
+        new_node.next = curr.next
+        curr.next = new_node
+
+        return head

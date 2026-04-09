@@ -1,0 +1,28 @@
+Time complexity: O(1)
+
+class Solution:
+    def deleteNode(self, node):
+        """
+        :type node: ListNode
+        :rtype: void Do not return anything, modify node in-place instead.
+        """
+        node.val = node.next.val # Copy next value into current node, so 4 5 1 9 becomes 4 1 1 9
+        node.next = node.next.next # Now we remove the duplicate 1
+
+
+A(4) → B(1) → C(1) → D(9)
+         ↑
+       node
+
+So:
+
+node = B
+node.next = C
+node.next.next = D
+🔍 Now execute the line
+node.next = node.next.next
+Before:
+B.next → C
+C.next → D
+After:
+B.next → D

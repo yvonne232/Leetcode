@@ -1,0 +1,68 @@
+Time complexity: O(n)
+Space complexity: O(1)
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNodes(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        head = self.reverse(head)
+        curr = head
+        max_val = head.val
+        while curr and curr.next:
+            if curr.next.val < max_val:
+                curr.next = curr.next.next
+            else: 
+                curr = curr.next
+                max_val = curr.val
+
+        return self.reverse(head)
+        
+        
+        
+    def reverse(self, head):
+        prev = None
+        curr = head
+
+        while curr:
+            nxt = curr.next
+            curr.next = prev
+            prev = curr
+            curr = nxt
+
+        return prev
+
+
+
+
+Why reverse the linked list?
+
+Because the problem asks:
+Remove nodes that have a GREATER value somewhere to the RIGHT
+But in a normal linked list traversal:
+you can only easily move left → right
+You cannot efficiently look ahead to all future nodes
+
+Reverse the list:
+
+8 -> 3 -> 13 -> 2 -> 5
+
+Now think carefully:
+
+Original question:
+
+Is there a greater node to my RIGHT?
+
+After reversing:
+
+Those "right-side" nodes become LEFT-side nodes
+
+Now during traversal:
+
+You already visited them
+
+So you only need:
+
+maximum value seen so far

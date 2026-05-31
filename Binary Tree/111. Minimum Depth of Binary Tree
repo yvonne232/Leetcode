@@ -1,0 +1,84 @@
+Time: O(n)
+Space: O(n)
+
+Why BFS?
+
+The minimum depth is:
+
+The distance to the first leaf encountered.
+
+BFS explores level by level:
+
+Level 1
+Level 2
+Level 3
+...
+
+The moment you find a leaf node, you can immediately return its depth because BFS guarantees it's the shallowest leaf
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:  #bfs
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        if not root: 
+            return 0
+        
+        q = deque([(root, 1)])
+
+        while q:
+            node, depth = q.popleft()
+
+            if not node.left and not node.right:
+                return depth
+                
+            if node.left:
+                q.append((node.left, depth+1))
+            if node.right:
+                q.append((node.right, depth+1))
+
+
+
+Time Complexity
+Worst Case: O(n)
+In the worst case, you may have to visit every node.
+
+Example:
+
+    1
+     \
+      2
+       \
+        3
+         \
+          4
+
+The only leaf is at the bottom, so BFS visits all n nodes.
+Time = O(n)
+
+Space Complexity
+
+The queue stores nodes waiting to be processed.
+Worst Case: O(n)
+
+Consider a complete tree:
+
+          1
+       /     \
+      2       3
+    /  \    /  \
+   4   5   6   7
+
+At the last level, the queue may contain about:
+
+n/2 nodes
+
+which is still:
+
+O(n)
+
+space.

@@ -1,0 +1,72 @@
+Time: O(n)
+Space: O(h)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        def dfs(node):
+            if not node:
+                return 0
+
+            left = dfs(node.left)
+            if left == -1:
+                return -1
+            
+            right = dfs(node.right)
+            if right == -1:
+                return -1
+
+            if abs(right-left) > 1:
+                return -1
+
+            return 1 + max(left, right)
+
+        return dfs(root) != -1
+
+
+
+How It Works
+
+Example:
+
+       3
+      / \
+     9  20
+       /  \
+      15   7
+
+Start from leaves:
+
+9  -> height 1
+15 -> height 1
+7  -> height 1
+
+20 -> 1 + max(1,1) = 2
+
+3  -> 1 + max(1,2) = 3
+
+
+
+Step 1: Leaf Nodes
+
+For node 9:
+left = dfs(None)   # 0
+right = dfs(None)  # 0
+return 1 + max(0, 0) = 1
+
+Step 2: Node 20
+
+Now at node 20:
+
+left = dfs(15)  # 1
+right = dfs(7)  # 1
+return 1 + max(1, 1) = 2
+
+So:
+
+dfs(9) = 1

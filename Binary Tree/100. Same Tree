@@ -17,3 +17,9 @@ class Solution:
             return False
 
         return (self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right))
+
+Why 100 Doesn't Need a Helper but 101 Usually Does
+
+For 100, the function signature already gives you:
+isSameTree(p, q)
+which is exactly the two nodes you need to compare.

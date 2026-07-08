@@ -1,0 +1,47 @@
+Complexity
+Inorder traversal: O(m) (m = number of nodes)
+Each query: O(log m)
+Total for n queries:
+Time: O(m + n log m)
+Space:
+O(m)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def closestNodes(self, root: Optional[TreeNode], queries: List[int]) -> List[List[int]]:
+        arr = []
+        def inorder(node):
+            if not node:
+                return
+            inorder(node.left)
+            arr.append(node.val)
+            inorder(node.right)
+
+        inorder(root)
+
+        res = []
+
+        for q in queries:
+            i = bisect_left(arr, q)
+
+            if i < len(arr) and arr[i] == q:
+                mini = arr[i]
+            elif i > 0:
+                mini = arr[i-1]
+            else: 
+                mini = -1
+            
+            if i < len(arr):
+                maxi = arr[i]
+            else:
+                maxi = -1
+            
+            res.append([mini, maxi])
+
+        return res
+

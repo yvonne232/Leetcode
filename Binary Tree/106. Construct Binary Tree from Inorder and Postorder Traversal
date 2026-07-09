@@ -21,3 +21,23 @@ class Solution:
         root.right = self.buildTree(inorder[mid+1:], postorder[mid:-1])
 
         return root
+
+Time Complexity: O(n²)
+
+There are two expensive operations:
+1. inorder.index(root_val)
+Finding the root in inorder takes:
+O(n)
+for each recursive call.
+
+2. List slicing
+For example:
+inorder[:mid]
+postorder[:mid]
+Python creates new lists.
+Creating a slice of length k costs:
+O(k)
+So at every level, you're copying arrays.
+Overall:
+
+Time = O(n²)

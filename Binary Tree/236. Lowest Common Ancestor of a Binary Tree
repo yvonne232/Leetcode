@@ -1,0 +1,71 @@
+Time: O(n)
+Space: O(h)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+class Solution:
+    def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if root is None:
+            return None
+
+        if root == p or root == q:
+            return root
+        
+        left = self.lowestCommonAncestor(root.left, p, q)
+        right = self.lowestCommonAncestor(root.right, p, q)
+
+        if left and right:
+            return root
+        
+        return left if left else right
+
+
+
+- Why return root when root == p or root == q?
+if root == p or root == q:
+    return root
+A node is allowed to be a descendant of itself.
+For example:
+
+    5
+   /
+  6
+
+If:
+
+p = 5
+q = 6
+
+then 5 is the LCA because 5 is an ancestor of 6, and 5 counts as its own descendant.
+
+- Why does left and right mean root is the LCA?
+if left and right:
+    return root
+If:
+left is not None
+right is not None
+
+then one target was found in the left subtree and the other was found in the right subtree.
+
+Example:
+
+        3
+       / \
+      5   1
+
+-Why return only one side?
+return left if left else right
+If only one side returns a node, both targets are not split at the current node.
+For example:
+
+left = 5
+right = None
+
+The result is somewhere in the left subtree, so pass 5 upward:
+return left
+If both sides are None, this line returns None

@@ -1,0 +1,72 @@
+Time: O(n)
+Space: O(h)
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def lcaDeepestLeaves(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def dfs(node):
+            if node is None:
+                return 0, None
+            
+            left_depth, left_lca = dfs(node.left)
+            right_depth, right_lca = dfs(node.right)
+
+            if left_depth > right_depth:
+                return left_depth + 1, left_lca
+
+            if right_depth > left_depth:
+                return right_depth + 1, right_lca
+            
+            return left_depth + 1, node
+
+        return dfs(root)[1]
+
+
+
+- Why this works
+At every node, compare the maximum leaf depth in the left and right subtrees.
+
+Left side is deeper
+if left_depth > right_depth:
+    return left_depth + 1, left_lca
+
+All deepest leaves are in the left subtree, so the answer must also be inside the left subtree.
+
+Right side is deeper
+if right_depth > left_depth:
+    return right_depth + 1, right_lca
+
+All deepest leaves are in the right subtree.
+
+Both sides have the same depth
+return left_depth + 1, node
+
+This means the deepest leaves exist on both sides.
+
+Therefore, the current node is the lowest node containing all of them, so it is their LCA.
+
+Example
+
+Consider:
+
+        1
+       / \
+      2   3
+     / \
+    4   5
+
+The deepest leaves are 4 and 5.
+
+At node 2:
+
+left_depth = 1
+right_depth = 1
+
+The depths are equal, so:
+
+return 2, node_2

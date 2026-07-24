@@ -1,0 +1,30 @@
+Time O(2^n * n)
+Space O(n) - recursion depth
+
+Each element has 2 choices:
+
+Include it
+Exclude it
+
+So the total number of subsets is 2^n
+
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+
+        if not nums:
+            return []
+
+        res = []
+        subset = []
+
+        def backtrack(start):
+            res.append(subset.copy())
+               
+            for i in range(start, len(nums)):
+                subset.append(nums[i])
+                backtrack(i+1)
+                subset.pop()
+
+        backtrack(0)
+        return res
+

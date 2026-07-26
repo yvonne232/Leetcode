@@ -1,0 +1,76 @@
+Time complexity: C(n_k) * k
+Space complexity: C(n_k) * k
+
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        res = []
+        path = []
+
+        def backtrack(start):
+            if len(path) == k:
+                res.append(path.copy())
+                return
+            
+            for i in range(start, n+1):
+                path.append(i)
+                backtrack(i+1)
+                path.pop()
+
+        backtrack(1)
+
+        return res
+
+backtrack(1)
+We may choose
+
+1
+2
+3
+4
+
+Suppose we choose
+
+1
+Now
+path = [1]
+
+We call
+backtrack(2)
+Now we can only choose
+
+2
+3
+4
+Notice we cannot choose 1 again.
+
+
+Time Complexity
+
+There are exactly
+
+(k_n)
+
+Each time we find one combination, we copy path, which has length k:
+
+res.append(path.copy())
+Copying takes:
+O(k)
+
+Therefore,
+
+O((k_n)×k)
+
+Space complexity:
+Auxiliary space
+Recursion depth: O(k)
+path: O(k)
+
+So:
+O(k)
+Output space
+There are
+(k_n)
+combinations, each containing k numbers.
+
+Therefore:
+O((k_n)×k)

@@ -1,0 +1,27 @@
+Time: Time = (number of solutions explored) × (cost to build one solution); so it is C (2n_n) * 1/(n+1) * 2n
+Space: recursion O(n) * m valid outputs
+
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+        path = []
+
+        def backtrack(openN, closeN):
+            if openN == closeN == n:
+                res.append("".join(path))
+                return
+            
+            if openN < n:
+                path.append("(")
+                backtrack(openN+1, closeN)
+                path.pop()
+    
+            if closeN < openN:
+                path.append(")")
+                backtrack(openN, closeN+1)
+                path.pop()
+        
+        backtrack(0,0)
+
+        return res
+        

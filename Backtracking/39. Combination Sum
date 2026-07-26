@@ -1,0 +1,55 @@
+Time: O(len(candidates) ^ target/min(candidates))
+Space: O(target/min(candidates))
+
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+
+        res = []
+        path = []
+
+        def backtrack(start, current_sum):
+            if current_sum == target:
+                res.append(path.copy())
+                return
+            
+            for i in range(start, len(candidates)):
+                num = candidates[i]
+                if current_sum + num > target:
+                    continue
+
+                path.append(num)
+                # Use i, not i + 1, because num can be reused
+                backtrack(i, current_sum + num)
+                path.pop()
+
+        backtrack(0, 0)
+
+        return res
+
+
+Step 3. Total states
+
+For example:
+candidates = [2,3,6]
+target = 8
+One path is:
+
+2 → 2 → 2 → 2
+
+So the maximum depth is approximately
+
+min(candidates)/ target
+	​
+
+A recursion tree with
+
+branching factor ≈ len(candidates)
+depth ≈ target / min(candidates)
+
+has at most
+
+len(candidates) ^ target/min(candidates)
+	​
+nodes.
+
+Therefore, the time complexity is O(len(candidates) ^ target/min(candidates))

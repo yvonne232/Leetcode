@@ -1,0 +1,74 @@
+Time: P(3^4)
+Space: O(4)
+
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        res = []
+        path = []
+
+        def backtrack(start):
+            if len(path) == 4:
+                if start == len(s):
+                    res.append(".".join(path))
+                return
+            
+            for end in range(start, min(start + 3, len(s))):
+                part = s[start:end+1]
+                if len(part) > 1 and part[0] == "0":
+                    break
+                if int(part) > 255:
+                    break
+                path.append(part)
+                backtrack(end+1)
+                path.pop()
+
+        backtrack(0)
+        return res
+
+Step 1. Recursion depth
+An IP address has exactly 4 parts:
+x.x.x.x
+So the recursion can go down at most 4 levels.
+
+Depth = 4
+Step 2. Branching factor
+Each part can contain at most 3 digits.
+For every recursive call, we try
+
+1 digit
+2 digits
+3 digits
+
+So each node has at most
+
+3 children.
+
+Step 3. Total recursion states
+
+The recursion tree therefore has at most
+
+3^4
+
+nodes.
+
+
+if len(part) > 1 and part[0] == "0":
+  break
+
+why here break not continue?
+This is a very common interview question. The reason is that once a substring starts with 0, making it longer will never fix the problem.
+
+Why not continue?
+If we wrote
+continue
+
+the loop would do this:
+
+"0"    ✓
+"01"   ✗
+"012"  ✗
+
+We already know
+"012"
+
+must be invalid because it still has a leading zero.

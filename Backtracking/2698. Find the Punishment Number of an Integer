@@ -1,0 +1,61 @@
+Time: O(n * d * 2^d)
+Space: O(logn)
+
+Time complexity
+
+A string with d digits has d - 1 possible cut positions. Each position can either:
+contain a cut
+not contain a cut
+Therefore, there are up to:
+2^d−1
+possible partitions.
+In this code:
+num = int(square[start:end + 1])
+creating the substring and converting it to an integer can take up to O(d) time.
+For one integer i, the time is:
+O(d⋅2^d)
+
+We check all integers from 1 through n, so the total time is: O(n⋅d⋅2^d)
+	​
+Space complexity
+The deepest recursive branch partitions every digit separately:
+"1" | "2" | "9" | "6"
+Therefore, the recursion depth is at most d:
+O(d)
+Since d=O(logn): O(logn)
+	​
+
+Final answer
+Time: O(n⋅d⋅2^d)
+Space: O(d) = O(logn)
+	​
+
+
+
+class Solution:
+    def punishmentNumber(self, n: int) -> int:
+        
+        def canPartition(sqaure, target):
+            def backtrack(start, currentSum):
+                if start == len(square):
+                    return currentSum == target
+                for end in (start, len(sqaure)):
+                    num = int(square[start:end+1])
+                    
+                    if currentSum + num > target:
+                        break
+                    
+                    if backtrack(end+1, currentSum + num):
+                        return True
+                return False
+
+
+            return backtrack(0, 0)
+
+        for i in range(n+1):
+            sqaure = str(i * i)
+            if canPartition(square, i):
+                res += i * i
+            
+        return res
+            

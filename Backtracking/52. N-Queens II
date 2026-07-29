@@ -1,3 +1,15 @@
+Time: O(n!)
+Therefore, the number of choices decreases:
+Row 0: n choices
+Row 1: n-1 choices
+Row 2: n-2 choices
+...
+Row n-1: 1 choice
+This gives approximately
+n × (n-1) × (n-2) × ... × 1 = n!
+Space: recursion O(n)
+
+
 class Solution:
     def totalNQueens(self, n: int) -> int:
         columns = set()

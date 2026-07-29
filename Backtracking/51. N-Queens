@@ -1,0 +1,43 @@
+Time: O(n!)
+Therefore, the number of choices decreases:
+Row 0: n choices
+Row 1: n-1 choices
+Row 2: n-2 choices
+...
+Row n-1: 1 choice
+This gives approximately
+n × (n-1) × (n-2) × ... × 1 = n!
+Space: O(n^2) - recursion O(n)
+
+class Solution:
+    def solveNQueens(self, n: int) -> List[List[str]]:
+        columns = set()
+        positive_diagonals = set() # row + col
+        negative_diagonals = set() # row - col
+
+        board = [["."] * n for _ in range(n)]
+        res = []
+
+        def backtrack(row):
+            if row == n:
+                res.append(["".join(r) for r in board])
+                return
+            
+            for col in range(n):
+                if (col in columns or row+col in positive_diagonals or row - col in negative_diagonals):
+                    continue
+                
+                board[row][col] = "Q"
+                columns.add(col)
+                positive_diagonals.add(row + col)
+                negative_diagonals.add(row - col)
+
+                backtrack(row+1)
+
+                board[row][col] = "."
+                columns.remove(col)
+                positive_diagonals.remove(row + col)
+                negative_diagonals.remove(row - col)
+
+        backtrack(0)
+        return res

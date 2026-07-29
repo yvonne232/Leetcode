@@ -1,0 +1,37 @@
+Time: O(n! * n)
+For each permutation, copying path takes O(n).
+Therefore,
+Time: O(n · n!)
+Space: O(n · n!)
+
+recursion depth = O(n)
+path = O(n)
+used = O(n)
+So the auxiliary space is:
+O(n)
+If including the output, storing all permutations requires O(n · n!).
+
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        path = []
+        used = [False] * len(nums)
+
+        def backtrack():
+            if len(path) == len(nums):
+                res.append(path.copy())
+                return
+
+            for i in range(len(nums)):
+                if used[i]:
+                    continue
+                used[i] = True
+                path.append(nums[i])
+
+                backtrack()
+
+                path.pop()
+                used[i] = False
+        
+        backtrack()
+        return res

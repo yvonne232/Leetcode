@@ -1,0 +1,34 @@
+class Solution:
+    def totalNQueens(self, n: int) -> int:
+        columns = set()
+        positive_diagonals = set()
+        negative_diagonals = set()
+
+        def backtrack(row):
+            if row == n:
+                return 1
+            
+            count = 0
+
+            for col in range(n):
+                if (col in columns or row+col in positive_diagonals or row-col in negative_diagonals):
+                    continue
+                
+                columns.add(col)
+                positive_diagonals.add(row + col)
+                negative_diagonals.add(row - col)
+
+                count += backtrack(row+1)
+
+                columns.remove(col)
+                positive_diagonals.remove(row + col)
+                negative_diagonals.remove(row - col)
+            
+            return count
+        
+        return backtrack(0)
+
+
+So when all rows have queens:
+if row == n:
+    return 1

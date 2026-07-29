@@ -1,0 +1,71 @@
+Time complexity: O(k*k!)
+Let k be the number of extra stones.
+Since there are exactly 9 cells and 9 stones,
+k = number of extra stones
+  = number of empty cells
+The recursion tree looks like:
+Level 0: k choices
+Level 1: k-1 choices
+Level 2: k-2 choices
+...
+Level k-1: 1 choice
+Space complexity: O(k) 
+extra      O(k)
+empty      O(k)
+used       O(k)
+recursion  O(k)
+
+class Solution:
+    def minimumMoves(self, grid: List[List[int]]) -> int:
+        extra = []
+        empty = []
+
+        for row in range(3):
+            for col in range(3):
+                if grid[row][col] == 0:
+                    empty.append((row, col))
+                elif grid[row][col] > 1:
+                    for _ in range(grid[row][col] - 1):
+                        extra.append((row, col))
+                
+        used = [False] * len(extra)
+
+        def backtrack(index):
+            if index == len(empty):
+                return 0
+            min_moves = float("inf")
+            empty_row, empty_col = empty[index]
+            
+            for i in range(len(extra)):
+                if used[i]:
+                    continue
+                extra_row, extra_col = extra[i]
+                distance = abs(extra_row - empty_row) + abs(extra_col - empty_col)
+
+                used[i] = True
+                moves = distance + backtrack(index+1)
+                min_moves = min(min_moves, moves)
+                used[i] = False
+            return min_moves
+        return backtrack(0)
+
+
+
+if index == len(empty):
+      return 0 why return 0
+
+why this does not have pop
+Excellent observation. The reason is that there is no list (path) that is growing and shrinking like in permutations or combinations. Instead, this problem uses the used array to represent the current state.
+
+Let's compare the two.
+
+Permutations
+path = []
+
+for i in range(len(nums)):
+    path.append(nums[i])
+
+    backtrack()
+
+    path.pop()
+This is one of the most common questions in recursive backtracking. The answer is because there are no more moves left to make.

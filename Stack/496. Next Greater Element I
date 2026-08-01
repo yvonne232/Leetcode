@@ -1,0 +1,19 @@
+Time: Let: m = len(nums1) n = len(nums2) Time Complexity: O(n + m)
+Space: stack O(n) dictionary O(n) output O(m) space complexity O(n + m)
+
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        stack = []
+        next_greater = {}
+
+        for num in nums2:
+            while stack and num > stack[-1]:
+                smaller = stack.pop()
+                next_greater[smaller] = num
+
+            stack.append(num)
+
+        return [next_greater.get(num, -1) for num in nums1]
+
+
+        

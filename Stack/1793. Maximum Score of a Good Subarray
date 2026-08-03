@@ -1,0 +1,31 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def maximumScore(self, nums: List[int], k: int) -> int:
+        left = k
+        right = k
+
+        min_value = nums[k]
+        max_score = nums[k]
+
+        # we want to continue expanding as long as it can expand
+        while left > 0 or right < len(nums) - 1:
+
+            # If one side is unavailable, expand the other side
+            if left == 0:
+                right += 1
+            elif right == len(nums) - 1:
+                left -= 1
+            
+            elif nums[left-1] > nums[right+1]:
+                left -= 1
+            else:
+                right += 1
+
+            min_value = min(min_value, nums[left], nums[right])
+            width = right - left + 1
+            score = min_value * width
+            max_score = max(max_score, score)
+
+        return max_score

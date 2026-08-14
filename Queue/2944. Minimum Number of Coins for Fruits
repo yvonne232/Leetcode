@@ -1,0 +1,24 @@
+
+
+#
+For this solution:
+
+dp[i]=minimum cost if fruit i is the next fruit we buy
+
+And the formula is:
+
+dp[i]=prices[i−1]+min(dp[i+1],...,dp[2i+1])
+
+Notice that dp[i] depends on DP values to its right.
+
+dp[i] needs things after it:
+
+i | future values →
+
+So calculate:
+
+... ← 3 ← 2 ← 1
+
+So, backwards
+
+# dp needs n+1 states

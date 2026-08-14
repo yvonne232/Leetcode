@@ -1,3 +1,13 @@
+Time: O(n)
+Space: O(n)
+
+why queue? 
+Exactly because the deque avoids repeatedly scanning the same DP values to find the minimum. without queue, n^2
+
+Approach	Time	Space
+DP without deque	O(n²)	O(n)
+DP + monotonic deque	O(n)	O(n)
+
 class Solution:
     def minimumCoins(self, prices: List[int]) -> int:
         # price: price[i] for (i+1) th fruit and then [i+2 ~ 2i+2) for free
@@ -10,7 +20,7 @@ class Solution:
                 q.popleft()
             # increasing queue
             dp[i] = prices[i-1] + dp[q[0]]
-            while q and dp[q[-1]] >= dp[i]:
+            while q and dp[q[-1]] > dp[i]:
                 q.pop()
             q.append(i)
         return dp[1]

@@ -1,4 +1,19 @@
-
+class Solution:
+    def minimumCoins(self, prices: List[int]) -> int:
+        # price: price[i] for (i+1) th fruit and then [i+2 ~ 2i+2) for free
+        # 1-based d-p
+        n = len(prices)
+        dp = [0] * (n+2)
+        q = deque([n+1])
+        for i in range(n, 0, -1):
+            while q and q[0] > 2*i + 1:
+                q.popleft()
+            # increasing queue
+            dp[i] = prices[i-1] + dp[q[0]]
+            while q and dp[q[-1]] >= dp[i]:
+                q.pop()
+            q.append(i)
+        return dp[1]
 
 #
 For this solution:
@@ -22,3 +37,29 @@ So calculate:
 So, backwards
 
 # dp needs n+1 states
+
+# why dp not n+1 sates
+Suppose:
+
+n = 3
+
+If you create:
+
+dp = [0] * (n + 1)
+
+you get:
+
+dp = [0, 0, 0, 0]
+
+index  0  1  2  3
+
+The largest valid index is 3.
+
+But our algorithm needs:
+
+dp[1] → fruit 1
+dp[2] → fruit 2
+dp[3] → fruit 3
+dp[4] → finished
+
+So dp[4] must exist.

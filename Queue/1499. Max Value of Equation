@@ -1,0 +1,36 @@
+Time: O(n)
+Space: O(n)
+
+class Solution:
+    def findMaxValueOfEquation(self, points: List[List[int]], k: int) -> int:
+        # y_i - x_i + y_j + x_j
+        # for previous point i, we need to maximize y-x
+        
+        q = deque() #store (x, y-x)
+        ans = float("-inf")
+
+        for x,y in points:
+            # remove points that are far away
+            while q and x - q[0][0] > k:
+                q.popleft()
+
+            # y-x is decreasing in queue
+            if q:
+                ans = max(ans, x + y + q[0][1])
+            
+            current = y - x
+            while q and q[-1][1] < current:
+                q.pop()
+
+            q.append((x, current))
+        
+        return ans
+
+# why x, y-x
+When we're processing the current point (x, y), its:
+x + y
+is already known.
+
+What we need from all the previous points is the largest:
+yi - xi
+

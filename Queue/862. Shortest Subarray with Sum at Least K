@@ -1,0 +1,28 @@
+# It can't do sliding window
+# Expanding the window increases the sum, and shrinking the window decreases the sum. That is true when all numbers are positive, but not when negative numbers exist.
+
+Time: O(n)
+Space: O(n)
+
+def shortestSubarray(nums, k):
+    n = len(nums)
+
+    prefix = [0] * (n + 1)
+
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + nums[i]
+
+    q = deque()
+    ans = n + 1
+
+    for i in range(n + 1):
+
+        while q and prefix[i] - prefix[q[0]] >= k:
+            ans = min(ans, i - q.popleft())
+
+        while q and prefix[i] <= prefix[q[-1]]:
+            q.pop()
+
+        q.append(i)
+
+    return ans if ans <= n else -1

@@ -1,0 +1,29 @@
+Time:  O(n)
+Space: O(n)
+
+class Solution:
+    def maximumRobots(self, chargeTimes: List[int], runningCosts: List[int], budget: int) -> int:
+        q = deque()
+        left = 0
+        running_sum = 0
+        ans = 0
+
+        for right in range(len(chargeTimes)):
+            running_sum += runningCosts[right]
+
+            # decreasing charge times
+            while q and chargeTimes[right] >= chargeTimes[q[-1]] :
+                q.pop()
+            q.append(right)
+
+            while q and (chargeTimes[q[0]] + (right - left + 1) * running_sum > budget):
+                running_sum -= runningCosts[left]
+                # If left robot is currently the maximum chargeTime,
+                # remove it from deque
+                if q[0] == left:
+                    q.popleft()
+                left += 1
+            
+            ans = max(ans, right-left+1)
+
+        return ans

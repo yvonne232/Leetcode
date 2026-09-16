@@ -1,0 +1,38 @@
+Time: O(n^2)
+Space: O(1)
+
+Time: O(n²)
+
+Sorting is O(n log n), and the two-pointer search across all k values is O(n²).
+
+Extra space: O(1), excluding the sorting implementation's internal space.
+class Solution:
+    def triangleNumber(self, nums: List[int]) -> int:
+        nums.sort()
+        n = len(nums)
+        count = 0 
+
+        for i in range(n-1, 1, -1):
+            l = 0
+            r = i - 1
+
+            while l < r:
+                if nums[l] + nums[r] > nums[i]:
+                    count += r-l
+                    r -= 1
+                else:
+                    l += 1
+        
+        return count
+
+
+
+why backwards not forward?
+
+Because in this solution, we choose nums[k] to be the largest side of the triangle.
+
+The key condition is:
+
+small + medium > largest
+
+So we fix the largest number first and use l and r to find the other two.

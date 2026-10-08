@@ -1,0 +1,20 @@
+Time: O(n)
+Space: O(min(n, k))
+
+The seen set stores characters currently in the window, where k is the number of possible distinct characters.
+
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        l = 0
+        chars = set()
+        max_length = 0
+
+        for r in range(len(s)):
+            while s[r] in chars:
+                chars.remove(s[l])
+                l += 1
+            chars.add(s[r])
+            max_length = max(max_length, r-l+1)
+
+        return max_length

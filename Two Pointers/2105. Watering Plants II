@@ -1,0 +1,30 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def minimumRefill(self, plants: list[int], capacityA: int, capacityB: int) -> int:
+        l = 0
+        r = len(plants) - 1
+        waterA = capacityA
+        waterB = capacityB
+        refills = 0
+
+        while l < r:
+            if waterA < plants[l]:
+                refills += 1
+                waterA = capacityA
+            waterA -= plants[l]
+            l += 1
+
+            if waterB < plants[r]:
+                refills += 1
+                waterB = capacityB
+            waterB -= plants[r]
+            r -= 1
+
+        if l == r:
+            if max(waterA, waterB) < plants[l]:
+                refills += 1
+        
+        return refills
+            

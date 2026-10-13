@@ -1,0 +1,22 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def countSubarrays(self, nums: List[int], k: int) -> int:
+        l = 0
+        ans = 0
+        count = 0
+        max_num = max(nums)
+        for r in range(len(nums)):
+            if nums[r] == max_num:
+                count += 1
+            while count >= k:
+                ans += len(nums)-r
+                if nums[l] == max_num:
+                    count -= 1
+                l += 1
+
+
+        return ans
+
+# Here, ans += n - r counts all possible subarrays that start at l and end at r or later.

@@ -1,6 +1,8 @@
 Time: O(n)
 Space: O(1)
 
+similar to 2958. Length of Longest Subarray With at Most K Frequency
+
 class Solution:
     def maximumLengthSubstring(self, s: str) -> int:
         l = 0

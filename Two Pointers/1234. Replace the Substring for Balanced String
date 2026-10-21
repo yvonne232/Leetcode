@@ -1,0 +1,43 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def balancedString(self, s: str) -> int:
+        from collections import Counter
+        n = len(s)
+        target = n//4
+        # Here, count tracks characters outside the sliding window, not inside it.
+        count = Counter(s)
+
+        if all(count[c] == target for c in "QWER"):
+            return 0
+        
+        l = 0
+        min_len = n
+
+        for r in range(n):
+            count[s[r]] -= 1
+            while all(count[c] <= target for c in "QWER"):
+                min_len = min(min_len, r-l+1)
+                count[s[l]] += 1
+                l += 1
+        return min_len
+
+
+Here, count tracks characters outside the sliding window, not inside it.
+When we expand the window to include s[r], we subtract that character from the outside count.
+
+For example:
+s = "QQQW"count = {"Q": 3, "W": 1}
+
+When r = 0, we remove the first Q from the outside count:
+count["Q"] = 2
+
+Step	Window	Outside Q count	Valid?	Min length
+Initial	Empty	3	No	4
+r = 0	   Q	  2	No	4
+r = 1	   QQ	  1	Yes	2
+Shrinkl	  Q	  2	No	2
+r = 2  	QQ	  1	Yes	2
+Shrinkl	Q	   2	No	2
+r = 3	  QW	 2	No	2

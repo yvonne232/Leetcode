@@ -1,0 +1,17 @@
+Time: O(n)
+Space: O(1)
+
+class Solution:
+    def countSubarrays(self, nums: list[int], k: int) -> int:
+        l = 0
+        total = 0
+        count = 0
+        for r in range(len(nums)):
+            total += nums[r]
+            while total * (r-l+1) >= k:
+                total -= nums[l]
+                l += 1
+            # all subarrays ending at r and starting between l and r are also valid,
+            count += r-l+1   
+
+        return count  
